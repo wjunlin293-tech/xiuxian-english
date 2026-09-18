@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>修仙英文录 · demo 切片</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260728-market-req-gate-v1">
+</head>
+<body>
+  <div id="zone-backdrop"></div>
+  <header id="topbar"></header>
+  <div id="eventbar"></div>
+  <div id="app">
+    <div id="stage"></div>
+  </div>
+
+  <!-- 识海/状态屏 浮层（只读·非养成入口） -->
+  <div id="overlay">
+    <div class="overlay-panel">
+      <button class="overlay-close" aria-label="关闭">✕</button>
+      <div class="overlay-body"></div>
+    </div>
+  </div>
+
+  <!-- 引擎（classic scripts·可直接 file:// 打开·后续 Electron/Capacitor 直接打包） -->
+  <script src="js/engine/state.js?v=20260713-paperdoll-v2"></script>
+  <script src="js/engine/save.js?v=20260712-slot-gender"></script>
+  <script src="js/data/words.js"></script>
+  <script src="js/data/zhongkao.generated.js?v=20260712-zhongkao-formal"></script>
+  <script src="js/data/gaokao.generated.js?v=20260701-vocab-expand"></script>
+  <script src="js/data/toefl.generated.js?v=20260701-vocab-expand"></script>
+  <script src="js/data/abroad.generated.js?v=20260701-vocab-expand"></script>
+  <script src="js/data/ielts.generated.js"></script>
+  <script src="js/data/cet4.generated.js"></script>
+  <script src="js/data/cet6.generated.js"></script>
+  <script src="js/data/gre.generated.js"></script>
+  <script src="js/data/vocab_polish.js?v=20260729-p18b-polish-b17"></script>
+  <script src="js/data/ipa.js"></script>
+  <script src="js/data/story.js?v=20260712-heroine-audit"></script>
+  <script src="js/data/story_nodes.js?v=20260722-pdark-v1"></script>
+  <script src="js/engine/visual.js"></script>
+  <script src="js/engine/modal.js?v=20260625-esc-back"></script>
+  <script src="js/engine/image_preview.js?v=20260629-preview-bg"></script>
+  <script src="js/engine/month_events.js?v=20260625-settings-yanqi"></script>
+  <script src="js/engine/world_feel.js?v=20260629-world-feel"></script>
+  <script src="js/engine/wordcard.js?v=20260727-wordcard-hooks-v1"></script>
+  <script src="js/engine/radar.js?v=20260625-settings-yanqi"></script>
+  <script src="js/engine/battle.js?v=20260703-avatar-portrait-fix"></script>
+  <script src="js/engine/paged.js?v=20260707-story-readfeel"></script>
+  <script src="js/engine/time.js"></script>
+  <script src="js/engine/life.js?v=20260625-settings-yanqi"></script>
+  <script src="js/engine/rebirth.js?v=20260728-origin-fate-limit"></script>
+  <script src="js/engine/explore.js?v=20260721-craft-item-icons-v1"></script>
+  <script src="js/engine/craft.js?v=20260721-craft-item-icons-v1"></script>
+  <script src="js/engine/market.js?v=20260728-market-req-gate-v1"></script>
+  <script src="js/engine/gear_appearance.js?v=20260718-wood-sword-area-down-v1"></script>
+  <script src="js/engine/relations.js?v=20260702-gender-daolv"></script>
+  <script src="js/engine/storyflow.js?v=20260722-pdark-prepared-v1"></script>
+  <script src="js/engine/ending.js?v=20260702-avatar-gender-close"></script>
+  <script src="js/engine/dev.js?v=20260626-pbreak-dev-clear"></script>
+  <script src="js/engine/hub.js?v=20260718-wood-sword-area-down-v1"></script>
+  <script src="js/engine/cultivate.js?v=20260713-focused-modes"></script>
+  <script src="js/engine/yantian.js?v=20260713-run-difficulty"></script>
+  <script src="js/engine/yiguo.js"></script>
+  <script src="js/engine/audio.js?v=20260717-audio-muted-resume-guard"></script>
+  <script src="js/engine/menu.js?v=20260717-audio-muted-resume-guard"></script>
+  <script src="js/main.js?v=20260717-audio-muted-resume-guard"></script>
+</body>
+</html>
