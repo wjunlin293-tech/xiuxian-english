@@ -1,28 +1,66 @@
 # 修仙英文录 · Xianxia English
 
 A browser-based Chinese-language interactive *xianxia* (cultivation) novel game in which the
-player character advances **only by memorising English vocabulary**. Narrative fiction and a
-spaced-repetition vocabulary system are the same progression loop: words learned and reviewed
+player character grows **only by memorising English vocabulary**. The narrative and the
+spaced-repetition vocabulary system are the same progression loop — words learned and reviewed
 are the sole source of combat power.
 
-**▶ [Play in the browser](https://superch1cky.github.io/xiuxian-english/)** — no install, no build step.
+**▶ [Play in the browser](https://wjunlin293-tech.github.io/xiuxian-english/)** — no install, no build step, no dependencies.
+
+![Title screen](docs/screenshots/01-title.png)
 
 ---
 
-## Overview
+## At a glance
 
 | | |
 |---|---|
 | **Engine** | ~11,300 lines across 25 vanilla JavaScript modules |
 | **Stack** | HTML, CSS, JavaScript — no framework, no bundler, no dependencies |
 | **Vocabulary** | 8 word books, ~9,200 distinct words (~16,900 entries) |
-| **Review model** | SM-2 style scheduling — intervals of 1/1/2/4/7/15 days by mastery level, on real calendar time |
+| **Review model** | SM-2 style scheduling — 1/1/2/4/7/15 day intervals by mastery, on real calendar time |
 | **Built** | Jun–Jul 2026, through AI-assisted development |
+
+---
+
+## The core loop
+
+The month is the scarce resource. Every action — studying, exploring, advancing the story —
+spends one. Character power comes from vocabulary and nothing else.
+
+### 1 · The academy hub
+
+Each month you choose one action. Progress, lifespan and the three-year deadline are always visible.
+
+![Hub](docs/screenshots/02-hub.png)
+
+### 2 · Pick a word book
+
+Eight books spanning Chinese exam syllabi and study-abroad tests, each generated from the
+open-source ECDICT dataset with its own frequency profile.
+
+![Word books](docs/screenshots/03-wordbooks.png)
+
+### 3 · Learn, then be tested
+
+New words grant progression currency; reviews that come due on real calendar time grant
+mastery, which is what actually drives combat power.
+
+![Word card](docs/screenshots/04-wordcard.png)
+
+### 4 · Spend that power
+
+Combat is HP-based and gated by cultivation realm. A player who refuses to grind vocabulary
+can still finish the story — they just walk the harder path.
+
+![Combat](docs/screenshots/05-battle.png)
+
+---
 
 ## Systems
 
 - **Time-driven progression** — the month is the scarce resource; every action spends it
-- **Vocabulary cultivation** — new words grant progression currency; due reviews grant mastery, which drives combat power
+- **Vocabulary cultivation** — new words grant progression currency; due reviews grant mastery
 - **Turn-based combat** with an HP model and realm-gated difficulty
 - **Exploration** across zones, with random encounters and material drops
 - **Crafting and alchemy** — pill recipes with diminishing returns on repeated doses
@@ -47,22 +85,23 @@ Books: 中考 · 高考 · 四级 · 六级 · 雅思 · 托福 · GRE · 留学
 ## Balance
 
 Progression curves and boss difficulty were validated with Node.js simulation scripts before
-tuning live values, to keep the game playable without grinding — a design constraint throughout:
-**more vocabulary makes you stronger, but refusing to grind never makes the game unplayable.**
+tuning live values. One design constraint held throughout: **more vocabulary makes you
+stronger, but refusing to grind never makes the game unplayable.**
 
 ## Repository layout
 
 ```
-index.html    redirect to the game
-游戏/          game — index.html, js/engine (25 modules), js/data (word books, story), css, music
-素材/          image assets — scenes, characters, equipment, items
+index.html          redirect into the game
+游戏/                game — js/engine (25 modules), js/data (word books, story), css, music
+素材/                image assets — scenes, characters, equipment, items
+docs/screenshots/   screenshots used in this README
 ```
 
-Design documents, the vocabulary build pipeline and balance simulation scripts are kept in a
-separate private working repository.
+Design documents, the vocabulary build pipeline and the balance simulation scripts are kept in
+a separate private working repository.
 
 ## Credits
 
 Game design, systems design, narrative and vocabulary curation by **Junlin (Jeff) Wu**.
 Implementation carried out through AI-assisted development.
-Vocabulary data derived from ECDICT (MIT License).
+Vocabulary data derived from [ECDICT](https://github.com/skywind3000/ECDICT) (MIT License).
