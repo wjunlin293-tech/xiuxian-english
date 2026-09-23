@@ -1,11 +1,17 @@
 # 修仙英文录 · Xianxia English
 
-A browser-based Chinese-language interactive *xianxia* (cultivation) novel game in which the
-player character grows **only by memorising English vocabulary**. The narrative and the
-spaced-repetition vocabulary system are the same progression loop — words learned and reviewed
-are the sole source of combat power.
+**A Chinese-language English-vocabulary learning app that solves the motivation problem with narrative
+instead of streaks.**
 
-**▶ [Play in the browser](https://wjunlin293-tech.github.io/xiuxian-english/)** — no install, no build step, no dependencies.
+Most vocabulary apps hold you with daily-streak guilt and leaderboards. This one makes the vocabulary
+itself the progression: words you learn and review are the **only** source of your character's power in
+an ongoing *xianxia* (cultivation) story. Study more and the story opens up; study less and you take the
+harder path — but you are never locked out.
+
+Review scheduling is SM-2 style on real calendar time, so the app tracks what you actually forget, not
+what you last tapped.
+
+**▶ [Try it in the browser](https://wjunlin293-tech.github.io/xiuxian-english/)** — no install, no sign-up, works offline once loaded.
 
 ![Title screen](docs/screenshots/01-title.png)
 
@@ -15,43 +21,47 @@ are the sole source of combat power.
 
 | | |
 |---|---|
-| **Engine** | ~11,300 lines across 25 vanilla JavaScript modules |
-| **Stack** | HTML, CSS, JavaScript — no framework, no bundler, no dependencies |
-| **Vocabulary** | 8 word books, ~9,200 distinct words (~16,900 entries) |
+| **Vocabulary** | 8 word books, ~9,200 distinct words — 中考 · 高考 · 四级 · 六级 · 雅思 · 托福 · GRE · 留学 |
 | **Review model** | SM-2 style scheduling — 1/1/2/4/7/15 day intervals by mastery, on real calendar time |
+| **Motivation model** | Vocabulary is the sole source of in-story progression; no streaks, no guilt mechanics |
+| **Data source** | Generated from open-source [ECDICT](https://github.com/skywind3000/ECDICT) (MIT) with frequency filtering and cross-book de-duplication |
+| **Stack** | HTML, CSS, JavaScript — no framework, no bundler, no dependencies, runs offline |
 | **Built** | Jun–Jul 2026, through AI-assisted development |
 
 ---
 
-## The core loop
+## How the learning loop works
 
-The month is the scarce resource. Every action — studying, exploring, advancing the story —
-spends one. Character power comes from vocabulary and nothing else.
+The month is the scarce resource. Every action — studying, exploring, advancing the story — spends one.
+That constraint is what makes study time feel valuable rather than obligatory.
 
 ### 1 · The academy hub
 
-Each month you choose one action. Progress, lifespan and the three-year deadline are always visible.
+Each month you choose one action. Progress, remaining lifespan and the story deadline are always visible,
+so the cost of *not* studying is legible without anyone nagging you.
 
 ![Hub](docs/screenshots/02-hub.png)
 
 ### 2 · Pick a word book
 
-Eight books spanning Chinese exam syllabi and study-abroad tests, each generated from the
-open-source ECDICT dataset with its own frequency profile.
+Eight books spanning Chinese exam syllabi and study-abroad tests. Each is generated from ECDICT with its
+own frequency profile, stop-word removal and cross-book de-duplication, so the books do not overlap and
+you never grind filler words.
 
 ![Word books](docs/screenshots/03-wordbooks.png)
 
 ### 3 · Learn, then be tested
 
-New words grant progression currency; reviews that come due on real calendar time grant
-mastery, which is what actually drives combat power.
+New words grant progression currency. Reviews that come due on **real calendar time** grant mastery —
+and mastery is what actually drives your character's power. Coming back tomorrow matters; tapping twice
+today does not.
 
 ![Word card](docs/screenshots/04-wordcard.png)
 
-### 4 · Spend that power
+### 4 · Spend what you learned
 
-Combat is HP-based and gated by cultivation realm. A player who refuses to grind vocabulary
-can still finish the story — they just walk the harder path.
+Combat is HP-based and gated by cultivation realm, which is gated by vocabulary. This is the payoff loop:
+the words you retained last week are the reason you survive this fight.
 
 ![Combat](docs/screenshots/05-battle.png)
 
@@ -59,8 +69,14 @@ can still finish the story — they just walk the harder path.
 
 ## Systems
 
+**Learning**
+- **SM-2 style review scheduling** — intervals of 1/1/2/4/7/15 days by mastery level, on real calendar time
+- **Eight vocabulary books** with multi-sense definitions, so learners see common meanings rather than an obscure first gloss
+- **Mixed question order** — due reviews first, then small batches of new words, then missed words recycled
+- **Progress garden (言田/神田)** — mark words you already know to skip them; achievements shelf for words truly mastered
+
+**Narrative & progression**
 - **Time-driven progression** — the month is the scarce resource; every action spends it
-- **Vocabulary cultivation** — new words grant progression currency; due reviews grant mastery
 - **Turn-based combat** with an HP model and realm-gated difficulty
 - **Exploration** across zones, with random encounters and material drops
 - **Crafting and alchemy** — pill recipes with diminishing returns on repeated doses
@@ -82,11 +98,17 @@ Word books are generated by a separate Node.js pipeline from the open-source
 
 Books: 中考 · 高考 · 四级 · 六级 · 雅思 · 托福 · GRE · 留学
 
-## Balance
+## The design constraint
 
-Progression curves and boss difficulty were validated with Node.js simulation scripts before
-tuning live values. One design constraint held throughout: **more vocabulary makes you
-stronger, but refusing to grind never makes the game unplayable.**
+One rule held throughout development: **more vocabulary makes you stronger, but refusing to grind never
+makes the app unusable.**
+
+This is the opposite of streak-based motivation. A learner who studies 20 words a month still finishes the
+story — on a harder path, with narrative consequences, but never blocked. Progression curves and boss
+difficulty were validated with Node.js simulation scripts before tuning live values, specifically to prove
+this constraint held at the low end.
+
+The goal was an app that rewards study without punishing life.
 
 ## Repository layout
 
