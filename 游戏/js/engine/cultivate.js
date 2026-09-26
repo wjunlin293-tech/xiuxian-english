@@ -612,6 +612,8 @@
     saveSessionDraft("cultivate");
     const item = session.items[session.index];
     const wordKey = item.wordKey;
+    const upcoming = session.items[session.index + 1];
+    if (upcoming && Game.wordcard.preload) Game.wordcard.preload(upcoming.wordKey); // 预载下一题发音
     const type = typeForItem(item);
     const meta = practiceMeta(item.kind);
     mountEl().innerHTML =
@@ -650,7 +652,7 @@
       if (result.type !== "learn" && !result.correct && Game.visual.redFlash) Game.visual.redFlash(); // 答错红闪(P-29)
       session.index += 1;
       saveSessionDraft("cultivate");
-      setTimeout(renderNext, 450);
+      setTimeout(renderNext, 120); // 原 450ms：旧题停在屏上像卡顿，缩短；提示 toast 独立浮层不受影响
     });
   }
 

@@ -53,8 +53,8 @@
     hard: { key: "hard", name: "困难", qiRate: 0.8, desc: "言气获取 80%，寿元和突破压力更明显。" },
   };
   const DEFAULT_SETTINGS = {
-    autoContinue: false,
-    autoContinueMode: "off",
+    autoContinue: true,           // 2026-09-26 用户：默认开启（中速 1.1s），可在修炼页/游戏设置关闭
+    autoContinueMode: "normal",
     cultivationMode: "mixed",
     difficulty: "normal",
     reducedMotion: false,
@@ -731,17 +731,33 @@
     return s || "按当前词书顺序估算";
   }
 
+  // 2026-09-26 性能：原来每个词都 Object.keys()+indexOf 整本书（3000 词书≈900 万次比较），
+  // 修炼菜单每次渲染 9 本书的考频统计要卡 ~2.4s。词书是静态数据 → 每本书只建一次序号表。
+  const _freqIndex = new WeakMap();
+  const _freqSummary = new WeakMap();
+  function frequencyIndex(book) {
+    let x = _freqIndex.get(book);
+    if (!x) {
+      const keys = Object.keys(book.words);
+      const idx = new Map();
+      keys.forEach((k, i) => idx.set(k, i));
+      x = { total: Math.max(1, keys.length), idx: idx };
+      _freqIndex.set(book, x);
+    }
+    return x;
+  }
+
   function wordFrequencyInfo(bookId, wordKey) {
     const sourceBookId = frequencyBookId(bookId, wordKey);
     const book = wordBookById(sourceBookId);
     if (!book || !book.words || !book.words[wordKey]) return null;
-    const keys = Object.keys(book.words);
-    const total = Math.max(1, keys.length);
+    const fi = frequencyIndex(book);
+    const total = fi.total;
     const w = book.words[wordKey];
     let rank = Number(w.sourceRank || 0);
     let estimated = false;
     if (!(rank > 0)) {
-      const idx = keys.indexOf(wordKey);
+      const idx = fi.idx.has(wordKey) ? fi.idx.get(wordKey) : -1;
       rank = idx >= 0 ? idx + 1 : total;
       estimated = true;
     }
@@ -769,6 +785,8 @@
     bookId = bookId || activeVocabBookId();
     const book = wordBookById(bookId);
     if (!book || !book.words) return { total: 0, high: 0, mid: 0, low: 0, estimated: 0, source: "" };
+    const cached = _freqSummary.get(book);
+    if (cached) return Object.assign({}, cached);
     const out = { total: 0, high: 0, mid: 0, low: 0, estimated: 0, source: "" };
     Object.keys(book.words).forEach((key) => {
       const info = wordFrequencyInfo(bookId, key);
@@ -778,6 +796,7 @@
       if (info.estimated) out.estimated += 1;
       if (!out.source && info.source) out.source = info.source;
     });
+    _freqSummary.set(book, Object.assign({}, out));
     return out;
   }
 

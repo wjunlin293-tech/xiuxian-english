@@ -378,7 +378,7 @@
       '<div class="yt-pages"><button class="btn btn-mini" id="yt-prev"' + (view.page ? "" : " disabled") + '>上一页</button>' +
       '<button class="btn btn-mini" id="yt-next"' + (view.page + 1 < pages ? "" : " disabled") + '>下一页</button></div>';
 
-    list.querySelectorAll(".yt-say").forEach((btn) => { btn.onclick = () => Game.wordcard && Game.wordcard.speak(btn.dataset.word); });
+    list.querySelectorAll(".yt-say").forEach((btn) => { btn.onclick = () => Game.wordcard && Game.wordcard.speak(btn.dataset.word, btn); });
     list.querySelectorAll(".yt-meaning-toggle").forEach((btn) => {
       btn.onclick = () => {
         const token = meaningToken(btn.dataset.key);

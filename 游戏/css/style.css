@@ -2646,3 +2646,9 @@ body.reduced-motion .story-page { animation:none; }
   .wc-rate { grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .hub-hero h1 { font-size:26px; }
 }
+
+/* 发音加载中（2026-09-26）：点 🔊 后文件未缓冲好 → 喇叭变暗呼吸 + 加载点，声音出来即恢复 */
+.wc-say.is-loading, .yt-say.is-loading { position:relative; opacity:.7; animation:sayLoading .9s ease-in-out infinite; }
+.wc-say.is-loading::after, .yt-say.is-loading::after { content:"···"; position:absolute; left:50%; bottom:-2px; transform:translateX(-50%); font-size:10px; letter-spacing:1px; color:var(--gold, #e8c77a); }
+@keyframes sayLoading { 0%,100% { opacity:.45; } 50% { opacity:.95; } }
+body.reduced-motion .wc-say.is-loading, body.reduced-motion .yt-say.is-loading { animation:none; }

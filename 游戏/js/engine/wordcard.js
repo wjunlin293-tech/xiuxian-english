@@ -106,7 +106,8 @@
   function ttsOn() {
     return !(Game.state && Game.state.settings && Game.state.settings.tts === false);
   }
-  function ttsAvailable() { return ttsSupported() && ttsOn(); }
+  // 有发音文件兜底后，听力题不再依赖系统语音包
+  function ttsAvailable() { return ttsOn() && (typeof Audio !== "undefined" || ttsSupported()); }
 
   // 美音/英音切换（用户 2026-06-19）：settings.accent="us"(en-US·默认) / "uk"(en-GB)
   function accent() {
@@ -124,9 +125,73 @@
     try { pickVoices(); window.speechSynthesis.onvoiceschanged = pickVoices; } catch (e) {}
   }
 
+  // ── 发音文件（2026-09-26）：优先播 ../发音/<us|uk>/<slug>.mp3（Piper 离线生成·公有领域语音），
+  // 不依赖玩家电脑装没装英文语音包；文件缺失 / 加载超时才退回系统 TTS。
+  const AUDIO_BASE = "../发音/";
+  const AUDIO_TIMEOUT_MS = 2500;
+  const _audioCache = new Map();
+  let _audioNow = null;
+  let _speakSeq = 0;
+  function audioSlug(text) {
+    return String(text).toLowerCase().trim().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+  }
+  function audioFor(text, acc) {
+    const key = acc + "/" + audioSlug(text);
+    let a = _audioCache.get(key);
+    if (!a) {
+      a = new Audio(encodeURI(AUDIO_BASE + key + ".mp3"));
+      a.preload = "auto";
+      _audioCache.set(key, a);
+      if (_audioCache.size > 40) _audioCache.delete(_audioCache.keys().next().value);
+    }
+    return a;
+  }
+  function preloadWord(text) {
+    if (!text || !ttsOn() || typeof Audio === "undefined") return;
+    try { const a = audioFor(text, accent()); if (a.readyState === 0) a.load(); } catch (e) {}
+  }
+  function markLoading(btn, on) {
+    const btns = btn ? [btn] : document.querySelectorAll(".wc-say[data-say]");
+    btns.forEach((b) => b.classList.toggle("is-loading", !!on));
+  }
+  function stopSpeech() {
+    if (_audioNow) { try { _audioNow.pause(); } catch (e) {} _audioNow = null; }
+    if (ttsSupported()) { try { if (window.speechSynthesis.speaking) window.speechSynthesis.cancel(); } catch (e) {} }
+  }
+  function speak(text, btn) {
+    if (!ttsOn() || !text) return;
+    if (typeof Audio === "undefined") return speakTTS(text);
+    const seq = ++_speakSeq;
+    let a;
+    try { a = audioFor(text, accent()); } catch (e) { return speakTTS(text); }
+    stopSpeech();
+    _audioNow = a;
+    let settled = false;
+    const finish = (ok) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      markLoading(btn, false);
+      if (!ok) {
+        try { a.pause(); } catch (e) {}
+        if (seq === _speakSeq) speakTTS(text);
+      }
+    };
+    const timer = setTimeout(() => finish(false), AUDIO_TIMEOUT_MS);
+    if (a.readyState < 3) markLoading(btn, true);   // 还没缓冲好 → 喇叭显示加载中
+    a.onplaying = () => { if (settled) { try { a.pause(); } catch (e) {} return; } finish(true); }; // 超时已改用 TTS → 晚到的文件不再叠播
+    a.onerror = () => finish(false);
+    try {
+      a.currentTime = 0;
+      a.volume = 0.8;
+      const p = a.play();
+      if (p && p.catch) p.catch(() => finish(false));
+    } catch (e) { finish(false); }
+  }
+
   let _ttsUtter = null;
-  function speak(text) {
-    if (!ttsAvailable() || !text) return;
+  function speakTTS(text) {
+    if (!ttsSupported() || !ttsOn() || !text) return;
     try {
       const synth = window.speechSynthesis;
       const acc = accent();
@@ -167,8 +232,9 @@
       '<button class="btn btn-mini wc-acc" data-acc data-wc-control="accent" title="美音 / 英音">' + (accent() === "uk" ? "英" : "美") + '</button>';
   }
   function bindAudio(scope, word) {
+    preloadWord(word); // 出题即预载本词发音，点喇叭时通常已就绪
     scope.querySelectorAll(".wc-say[data-say]").forEach((say) => {
-      say.onclick = () => speak(word);
+      say.onclick = () => speak(word, say);
     });
     scope.querySelectorAll(".wc-acc[data-acc]").forEach((acc) => {
       acc.onclick = () => {
@@ -180,7 +246,7 @@
         }
         const label = accent() === "uk" ? "英" : "美";
         scope.querySelectorAll(".wc-acc[data-acc]").forEach((x) => { x.textContent = label; });
-        speak(word); // 切换即试听
+        speak(word, scope.querySelector(".wc-say[data-say]")); // 切换即试听
       };
     });
   }
@@ -257,8 +323,10 @@
     const next = mount.querySelector("#wc-next");
     if (!next) return onDone && onDone(result);
     requestAnimationFrame(function () {
+      // 按钮已在屏内就不滚；屏外才直接跳到（不再平滑滚动，避免内容从鼠标下滑走的"延迟感"）
       try {
-        next.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        const r = next.getBoundingClientRect();
+        if (r.top < 0 || r.bottom > window.innerHeight) next.scrollIntoView({ block: "nearest", inline: "nearest" });
         next.focus({ preventScroll: true });
       } catch (e) {
         try { next.scrollIntoView(false); } catch (_) {}
@@ -635,5 +703,7 @@
     return renderRecognize(mount, wordKey, opts, onDone);
   }
 
-  Game.wordcard = { render, meaning, speak, ttsAvailable };
+  // 供修炼队列预载下一题发音
+  function preload(wordKey) { const w = wordOf(wordKey); if (w && w.word) preloadWord(w.word); }
+  Game.wordcard = { render, meaning, speak, ttsAvailable, preload };
 })(window.Game = window.Game || {});
