@@ -8,7 +8,7 @@
 
 **▶ [浏览器直接打开](https://wjunlin293-tech.github.io/xiuxian-english/)** —— 免安装、免注册，加载一次后可离线使用。
 
-> 想看另一种玩法？还有一个节奏更快、更热血的 **[《重生之我在仙界学英语》](https://github.com/wjunlin293-tech/xiuxian-english-classic)**，欢迎两版都试试，告诉我更喜欢哪个。
+> 想看另一种玩法？还有一个节奏更快、更热血的 **[《重生之我在仙界学英语》](https://github.com/wjunlin293-tech/reborn-immortal-english)**，欢迎两版都试试，告诉我更喜欢哪个。
 
 <!-- B站演示视频：发布后把链接填到这里 -->
 
