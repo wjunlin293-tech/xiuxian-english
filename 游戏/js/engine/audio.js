@@ -93,7 +93,7 @@
 
   function audioSettings() {
     Game.state.settings = Game.state.settings || {};
-    if (!Game.state.settings.audio) Game.state.settings.audio = { muted: false, vol: 0.3 };
+    if (!Game.state.settings.audio) Game.state.settings.audio = { muted: false, vol: 0.21 };
     if (typeof Game.state.settings.bgmVolume === "number") Game.state.settings.audio.vol = Game.state.settings.bgmVolume;
     return Game.state.settings.audio;
   }
@@ -123,11 +123,11 @@
     return persistedMuted() === true;
   }
 
-  function gainVal() { const a = audioSettings(); return isMuted() ? 0 : (typeof a.vol === "number" ? a.vol : 0.3); }
+  function gainVal() { const a = audioSettings(); return isMuted() ? 0 : (typeof a.vol === "number" ? a.vol : 0.21); } // 默认 70%（原 0.3）
   function sfxGainVal() {
     const s = Game.state && Game.state.settings ? Game.state.settings : {};
     if (isMuted() || s.sfx === false) return 0;
-    return typeof s.sfxVolume === "number" ? Math.max(0, Math.min(1, s.sfxVolume)) : SFX_VOL;
+    return typeof s.sfxVolume === "number" ? Math.max(0, Math.min(1, s.sfxVolume)) : SFX_VOL * 0.7; // 默认 70%；SFX_VOL 仍作文件音效的比例基准
   }
   function stopFile() {
     if (bgmAudio) {

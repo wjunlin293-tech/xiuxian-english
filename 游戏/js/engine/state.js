@@ -62,10 +62,10 @@
     tts: true,
     accent: "us",
     sfx: true,
-    bgmVolume: 0.3,
-    sfxVolume: 0.16,
+    bgmVolume: 0.21,   // 2026-09-26 用户：默认音量降到原来的 70%（原 0.3）
+    sfxVolume: 0.112,  // 原 0.16 ×0.7
     combatReveal: 0.3, // 藏锋·展露功力滑杆上次的值（0.1~1.0），战斗默认沿用、可再调
-    audio: { muted: false, vol: 0.3 },
+    audio: { muted: false, vol: 0.21 },
   };
 
   const DEFAULT_STATE = {
@@ -180,11 +180,11 @@
     out.sfx = out.sfx !== false;
     const bgmVolume = Number(typeof out.bgmVolume !== "undefined" ? out.bgmVolume : (out.audio && out.audio.vol));
     const sfxVolume = Number(out.sfxVolume);
-    out.bgmVolume = Number.isFinite(bgmVolume) ? Math.max(0, Math.min(1, bgmVolume)) : 0.3;
-    out.sfxVolume = Number.isFinite(sfxVolume) ? Math.max(0, Math.min(1, sfxVolume)) : 0.16;
+    out.bgmVolume = Number.isFinite(bgmVolume) ? Math.max(0, Math.min(1, bgmVolume)) : 0.21;
+    out.sfxVolume = Number.isFinite(sfxVolume) ? Math.max(0, Math.min(1, sfxVolume)) : 0.112;
     const reveal = Number(out.combatReveal);
     out.combatReveal = Number.isFinite(reveal) ? Math.max(0.1, Math.min(1, Math.round(reveal * 10) / 10)) : 0.3;
-    if (!out.audio) out.audio = { muted: false, vol: 0.3 };
+    if (!out.audio) out.audio = { muted: false, vol: 0.21 };
     out.audio.muted = !!out.audio.muted;
     out.audio.vol = out.bgmVolume;
     return out;
