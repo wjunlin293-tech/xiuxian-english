@@ -245,6 +245,40 @@
     if (next) next.onclick = () => { gardenView.page += 1; renderGardenWords(); };
   }
 
+  // P-INSIGHT：学习足迹（本机统计·可导出给开发者做产品改进）
+  function insightSection() {
+    if (!Game.insight) return "";
+    const d = Game.insight.summary();
+    const acc = d.accuracy === null ? "—" : d.accuracy + "%";
+    return '<section class="sg-section"><div class="sg-title"><div><span>四</span><h3>学习足迹</h3></div>' +
+      '<b>' + d.daysActive + ' 天在修行</b></div>' +
+      '<div class="sg-field-stats">' +
+      '  <b>' + d.newWords + '</b><span>初见真言</span>' +
+      '  <b>' + d.reviews + '</b><span>到期温故</span>' +
+      '  <b>' + acc + '</b><span>答对率</span>' +
+      '  <b>' + d.studySessions + '</b><span>闭关次数</span>' +
+      '</div>' +
+      '<p class="dim small">这些数字只存在你自己的设备上，不会上传。若你愿意帮助改进这个应用，' +
+      '可以导出一段匿名摘要发给作者——内容你点开就能看见，不含姓名、邮箱或任何可识别身份的信息。</p>' +
+      '<div class="sg-tools"><button class="btn btn-mini" id="sg-insight-export">导出匿名摘要</button></div>' +
+      '<textarea id="sg-insight-box" readonly style="display:none;width:100%;min-height:96px;margin-top:8px;' +
+      'font-size:12px;line-height:1.5;padding:8px;border-radius:8px;"></textarea></section>';
+  }
+
+  function bindInsight() {
+    const btn = mountEl().querySelector("#sg-insight-export");
+    if (!btn || !Game.insight) return;
+    btn.onclick = () => {
+      const box = mountEl().querySelector("#sg-insight-box");
+      box.value = Game.insight.exportText();
+      box.style.display = "block";
+      box.focus();
+      box.select();
+      try { document.execCommand("copy"); btn.textContent = "已复制到剪贴板"; }
+      catch (e) { btn.textContent = "已展开，请手动复制"; }
+    };
+  }
+
   function showGarden() {
     Game.normalizeState && Game.normalizeState();
     Game.setZone && Game.setZone("shentian");
@@ -280,7 +314,8 @@
       '<div class="sg-tools"><input id="sg-search" type="search" placeholder="搜索单词、释义或词书" value="' + esc(gardenView.query) + '">' +
       '<div class="sg-filters">' + [["all","全部"],["reviewed","修炼掌握"],["marked","标熟入田"],["memory","前世记忆"]].map((f) =>
         '<button class="btn btn-mini sg-filter' + (gardenView.filter === f[0] ? " active" : "") + '" data-filter="' + f[0] + '">' + f[1] + '</button>').join("") + '</div></div>' +
-      '<div id="sg-word-list"></div></section></div>';
+      '<div id="sg-word-list"></div></section>' +
+      insightSection() + '</div>';
     mountEl().querySelector("#sg-back").onclick = () => Game.cultivate.chooseSession();
     mountEl().querySelector("#sg-books").onclick = () => show(Game.state.vocabBookId);
     const search = mountEl().querySelector("#sg-search");
@@ -289,6 +324,7 @@
       btn.onclick = () => { gardenView.filter = btn.dataset.filter; gardenView.page = 0; renderGardenWords(); };
     });
     renderGardenWords();
+    bindInsight();
     if (Game.modal && Game.modal.firstTime) {
       Game.modal.firstTime("shentian_intro", {
         tag: "神田初开",

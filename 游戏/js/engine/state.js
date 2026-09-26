@@ -968,6 +968,11 @@
     }
     st.dueMonth = nextDueMonth(now, st.mastery, score);
     st.dueAt = nextDueAt(score, st.mastery); // 真实日历到期（跨场次复习）
+    // P-INSIGHT：匿名学习计数（只落本机·不外发）
+    if (Game.insight) {
+      Game.insight.bump(wasDue ? "reviews" : "newWords");
+      Game.insight.bump(score >= 2 ? "correct" : "wrong");
+    }
     return st;
   }
 

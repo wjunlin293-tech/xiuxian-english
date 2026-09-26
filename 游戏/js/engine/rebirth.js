@@ -511,6 +511,7 @@
     Game.logEvent && Game.logEvent((totals.memory > 0 ? "☯ 入世构筑 · " : "✦ 先天气运 · ") + (Game.state.origin.names.join(" / ") || "未选特质"));
     Game.save && Game.save.write({ view: "hub" });
     Game.renderHeader && Game.renderHeader();
+    Game.insight && Game.insight.mark("start"); // 漏斗：完成入世·真正开始
     Game.hub && Game.hub.show(totals.memory > 0 ? "点数已定，魂归新身。睁眼，便是来世。" : "先天气运已定。此身入世，命数从此分岔。");
   }
   function ghostCount() {

@@ -724,6 +724,8 @@
     if (!session) return Game.hub.show();
     const summary = summarizeSession(prefix);
     const message = prefix + "，完成 " + session.results.length + " 题，言气 +" + session.gained + "。";
+    Game.insight && Game.insight.bump("studySessions"); // P-INSIGHT
+    Game.insight && Game.insight.mark("study_done");
     const events = applySessionResults();
     events.forEach((ev) => {
       if (!Game.logEvent) return;

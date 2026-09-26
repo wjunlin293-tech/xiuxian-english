@@ -47,6 +47,10 @@
       Game.state.flags.vowBossDue = true;
       events.push({ type: "timeEvent", id: "vow_boss_due" });
     }
+    if (Game.insight) { // P-INSIGHT：进度深度
+      Game.insight.bump("months");
+      Game.insight.peak("realmMax", Game.state && Game.state.realmIndex || 0);
+    }
     const life = Game.spendLifespan ? Game.spendLifespan(1, "month") : null;
     if (life && life.dead) events.push({ type: "life_death", left: life.left });
     const monthEvent = Game.monthEvents && Game.monthEvents.rollAfterMonth && Game.monthEvents.rollAfterMonth();

@@ -210,6 +210,8 @@
       if (e.target && e.target.closest && e.target.closest("button, .btn")) Game.audio && Game.audio.sfx && Game.audio.sfx("click");
     });
 
+    Game.insight && Game.insight.boot();       // P-INSIGHT：会话开始
+    Game.insight && Game.insight.mark("open");  // 漏斗：打开页面
     Game.save && Game.save.migrateLegacy && Game.save.migrateLegacy();
     if (Game.menu) return Game.menu.showGate ? Game.menu.showGate() : Game.menu.showMain();
     loadSlot((Game.save && Game.save.lastSlot && Game.save.lastSlot()) || 1);

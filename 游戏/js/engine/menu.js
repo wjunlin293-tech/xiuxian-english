@@ -223,6 +223,8 @@
   }
 
   function showMain() {
+    Game.insight && Game.insight.mark("menu"); // 漏斗：过了标题屏
+
     currentScreen = "main";
     settingsBack = null;
     enterMenuMode();
