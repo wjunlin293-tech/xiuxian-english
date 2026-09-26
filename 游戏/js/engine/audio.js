@@ -93,7 +93,7 @@
 
   function audioSettings() {
     Game.state.settings = Game.state.settings || {};
-    if (!Game.state.settings.audio) Game.state.settings.audio = { muted: false, vol: 0.21 };
+    if (!Game.state.settings.audio) Game.state.settings.audio = { muted: false, vol: 0.3 };
     if (typeof Game.state.settings.bgmVolume === "number") Game.state.settings.audio.vol = Game.state.settings.bgmVolume;
     return Game.state.settings.audio;
   }
@@ -123,11 +123,13 @@
     return persistedMuted() === true;
   }
 
-  function gainVal() { const a = audioSettings(); return isMuted() ? 0 : (typeof a.vol === "number" ? a.vol : 0.21); } // 默认 70%（原 0.3）
+  // 2026-09-26 用户：游戏本体音乐/音效实际输出整体降到 70%（滑块数值不变，所有玩家生效）
+  const OUTPUT_SCALE = 0.7;
+  function gainVal() { const a = audioSettings(); return isMuted() ? 0 : (typeof a.vol === "number" ? a.vol : 0.3) * OUTPUT_SCALE; }
   function sfxGainVal() {
     const s = Game.state && Game.state.settings ? Game.state.settings : {};
     if (isMuted() || s.sfx === false) return 0;
-    return typeof s.sfxVolume === "number" ? Math.max(0, Math.min(1, s.sfxVolume)) : SFX_VOL * 0.7; // 默认 70%；SFX_VOL 仍作文件音效的比例基准
+    return (typeof s.sfxVolume === "number" ? Math.max(0, Math.min(1, s.sfxVolume)) : SFX_VOL) * OUTPUT_SCALE;
   }
   function stopFile() {
     if (bgmAudio) {

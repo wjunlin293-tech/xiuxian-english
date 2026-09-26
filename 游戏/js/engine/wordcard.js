@@ -183,7 +183,7 @@
     a.onerror = () => finish(false);
     try {
       a.currentTime = 0;
-      a.volume = 0.8;
+      a.volume = 0.56;  // 2026-09-26 用户：发音整体降到 70%（原 0.8）
       const p = a.play();
       if (p && p.catch) p.catch(() => finish(false));
     } catch (e) { finish(false); }
@@ -201,7 +201,7 @@
         if (_voices[acc]) u.voice = _voices[acc];
         u.lang = acc === "uk" ? "en-GB" : "en-US";
         u.rate = 0.9;
-        u.volume = 0.5;                         // 用户 2026-06-19：音量调低 50%
+        u.volume = 0.35;                        // 用户 2026-06-19：音量调低 50%；2026-09-26 再 ×0.7（原 0.5）
         _ttsUtter = u;                          // 持引用·防播放中被 GC 掐断
         synth.speak(u);
         if (synth.paused) { try { synth.resume(); } catch (e) {} }
