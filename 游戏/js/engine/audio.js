@@ -35,7 +35,7 @@
   const FILE_BY_MOOD = {
     cover: "../bgm/封面.mp3",
     menu: "../bgm/主菜单.mp3",
-    main: "../bgm/宗门:城市bgm.mp3",
+    main: "../bgm/宗门_城市bgm.mp3",
     meditate: "../bgm/休闲场景用的音乐.mp3",
     warm: "../bgm/休闲场景用的音乐.mp3",
     serene: "../bgm/探险解谜.mp3",
