@@ -1,14 +1,14 @@
-# 修仙英文录 · 背单词修仙
+# 世外果缘 · 背单词修仙
 
 **一款把背单词做成修仙故事的英语词汇学习软件。你背下的每一个单词，就是你的修为。**
 
-大多数背单词 App 靠打卡连胜、排行榜和"你已经 3 天没背了"来留住人。修仙英文录换了个思路：
+大多数背单词 App 靠打卡连胜、排行榜和"你已经 3 天没背了"来留住人。世外果缘换了个思路：
 **单词是角色变强的唯一来源**。背得多，境界涨得快，剧情走爽路；背得少，照样能玩下去，只是路难走一点。
 不逼你，也不锁你。
 
 **▶ [浏览器直接打开](https://wjunlin293-tech.github.io/xiuxian-english/)** —— 免安装、免注册，加载一次后可离线使用。
 
-> 想看另一种玩法？还有一个节奏更快、更热血的 **[初版（异火篇）](https://github.com/wjunlin293-tech/xiuxian-english-classic)**，欢迎两版都试试，告诉我更喜欢哪个。
+> 想看另一种玩法？还有一个节奏更快、更热血的 **[《重生之我在仙界学英语》](https://github.com/wjunlin293-tech/xiuxian-english-classic)**，欢迎两版都试试，告诉我更喜欢哪个。
 
 <!-- B站演示视频：发布后把链接填到这里 -->
 
@@ -119,7 +119,7 @@ docs/screenshots/   README 截图
 <details>
 <summary><b>English summary</b></summary>
 
-**Xianxia English** is a Chinese-language English-vocabulary learning app that replaces streak-based
+**世外果缘 (Shiwai Guoyuan)** is a Chinese-language English-vocabulary learning app that replaces streak-based
 motivation with narrative: the words you learn and review are the *only* source of your character's power
 in a xianxia (cultivation) story. Study more and the story opens up; study less and you take a harder path,
 but you are never locked out.

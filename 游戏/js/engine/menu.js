@@ -195,7 +195,7 @@
     Game.setZone && Game.setZone("cover");
     el().innerHTML =
       '<section class="main-menu entry-gate">' +
-      '  <div class="menu-logo-wrap"><img class="menu-logo" src="../素材/logo.png" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><h1 class="menu-title-fallback">修仙英文录</h1></div>' +
+      '  <div class="menu-logo-wrap"><img class="menu-logo" src="../素材/logo.png" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><h1 class="menu-title-fallback">世外果缘</h1></div>' +
       '  <p class="menu-sub">问言入道，识海开田。</p>' +
       '  <button class="btn btn-gold entry-start" id="entry-start">点击入道</button>' +
       '  <div class="menu-foot small dim">点击后进入主菜单；若未静音，会同时接续音乐。网页端需要这一次点击来通过 Chrome 的音频策略。</div>' +
@@ -235,7 +235,7 @@
     const last = lastSlotSummary();
     el().innerHTML =
       '<section class="main-menu">' +
-      '  <div class="menu-logo-wrap"><img class="menu-logo" src="../素材/logo.png" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><h1 class="menu-title-fallback">修仙英文录</h1></div>' +
+      '  <div class="menu-logo-wrap"><img class="menu-logo" src="../素材/logo.png" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><h1 class="menu-title-fallback">世外果缘</h1></div>' +
       '  <p class="menu-sub">问言入道，识海开田。</p>' +
       '  <div class="menu-actions">' +
       (last ? '    <button class="btn btn-gold" id="menu-continue">继续上次 · ' + esc(last.realm) + ' ' + esc(last.timeLabel || ("第" + last.year + "年" + last.month + "月")) + '</button>' : '') +
